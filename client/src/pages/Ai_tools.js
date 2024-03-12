@@ -1,11 +1,13 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import Layout from '../components/layout'
-import { Select, Space } from 'antd';
+import { Select, Space,message } from 'antd';
 import axios from 'axios'
 
 const Ai_tools = () => {
-    let selections=[]
-    let predictedDisease
+    //let selections=[]
+    //let predictedDisease
+    const [selections, setSelections] = useState([]);
+    const [predictedDisease, setPredictedDisease] = useState("");
     const symptoms = [
         'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity',
         'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue',
@@ -40,11 +42,11 @@ const Ai_tools = () => {
                 }
             })
             if (res.data.success) {
-                //message.success(res.data.message)
-                predictedDisease=res.data.message
-                console.log(predictedDisease)
+                message.success(res.data.message)
+                setPredictedDisease(res.data.result.predictedDisease);
+                console.log(`predicted disease: ${res.data.result.predictedDisease}`)
             } else {
-                predictedDisease="error in prediction"
+                setPredictedDisease("error in prediction");
             }
         } catch (error) {
             console.log(error)
@@ -57,9 +59,7 @@ const Ai_tools = () => {
     
 
     const onChange = (value) => {
-        //console.log(value);
-        selections=[...value]
-        //console.log("result size",selections.length ,":", selections)
+        setSelections(value);
     };
     return (
         <Layout>

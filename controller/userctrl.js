@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const doctorModel = require('../models/doctorModels')
 const appointmentModel = require('../models/appointmentModel')
 const moment = require('moment')
+const axios = require('axios')
 
 const registerController = async (req, res) => {
   try {
@@ -254,8 +255,12 @@ const userAppointmentsController=async(req,res)=>{
 const PredictDiseaseController = async(req,res)=>{
   try {
     console.log(req.body)
+    const result=await axios.post(
+      'http://127.0.0.1:2024/api/predict',req.body)
+      console.log(result.data)
     res.status(201).send({
       success: true,
+      result: result.data,
       message: "success",
     });
   } catch (error) {
